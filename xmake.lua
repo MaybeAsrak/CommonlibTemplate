@@ -15,15 +15,22 @@ set_config("skyrim_vr", false)
 
 add_rules("mode.debug", "mode.releasedbg")
 add_rules("plugin.vsxmake.autoupdate")
+set_config("skse_xbyak", true)
+add_requires("toml11")
+
+add_requires("xbyak")
 
 target("Template")
     add_deps("commonlibsse-ng")
+    add_packages("xbyak")
+        add_packages("toml11")
 
     add_rules("commonlibsse-ng.plugin", {
         name = "Template",
         author = "AUTHOR_NAME",
         description = ""
     })
+        add_extrafiles("release/**.toml")
 
     add_files("source/**.cpp")
     add_headerfiles("include/**.h")

@@ -1,12 +1,12 @@
 #pragma once
-
+#include <toml.hpp>
 #include <RE/Skyrim.h>
 #include <SKSE/SKSE.h>
 //#include <FileName.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/msvc_sink.h>
 #include <PerkEntryPointExtenderAPI.h>
-
+#include <xbyak/xbyak.h>
 #define ERROR(message, ...) SKSE::log::error(message, ##__VA_ARGS__)
 #define INFO(message, ...) SKSE::log::info(message, ##__VA_ARGS__)
 #define TRACE(message, ...) SKSE::log::trace(message, ##__VA_ARGS__)
@@ -49,6 +49,36 @@ namespace stl {
         REL::Relocation<std::uintptr_t> vtbl{id};
         T::func = vtbl.write_vfunc(idx, T::thunk);
     }
+
+    template <std::integral T, std::size_t N>
+    void WRITE_BYTES(std::uintptr_t a_Destination, const std::array<T, N>& a_Data)
+    {
+        REL::safe_write(a_Destination, a_Data.data(), a_Data.size() * sizeof(T));
+    }
+
+    template <class T, std::size_t NOPs = 0>
+    void BRANCH5(REL::RelocationID a_ID, std::uint32_t a_Offset)
+    {
+        const REL::Relocation target{ a_ID, a_Offset };
+
+        T hook(reinterpret_cast<std::uintptr_t>(T::Call), target.address());
+        hook.ready();
+
+        auto& trampoline = SKSE::GetTrampoline();
+
+        trampoline.write_branch<5>(target.address(), trampoline.allocate(hook));
+
+        if constexpr (NOPs) {
+            std::array<std::uint8_t, NOPs> buffer{};
+            buffer.fill(0x90);
+
+            WRITE_BYTES(target.address() + 0x5, buffer);
+        }
+    }
+
+
+
+
 }
 
 
