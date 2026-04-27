@@ -30,7 +30,12 @@ static void CastSpellImpl(RE::ActorMagicCaster* a_AMC) {
     REL::Relocation<func_t> func{REL::RelocationID(34445, 34445)};
     func(a_AMC);
 }
-
+static RE::ActorValue LookupActorValueByName(const char* av_name) {
+    // SE: 0x3E1450, AE: 0x3FC5A0, VR: ---
+    using func_t = decltype(&LookupActorValueByName);
+    REL::Relocation<func_t> func{REL::RelocationID(26570, 27203)};
+    return func(av_name);
+}
 
 
 struct Hooks {
@@ -101,6 +106,75 @@ struct Hooks {
         static inline REL::Relocation<decltype(thunk)> func;
     };
 
+    struct InitiateSpellHook {
+        static void thunk(RE::ActorMagicCaster* a_AMC, RE::MagicItem* spell, RE::Actor* a_PC, bool a_arg4) {
+            //bool testbool;
+            //func(entry_point, caster, a_spell, &outbound);
+            //if (testbool == true) {
+            //    if (caster->GetActorRuntimeData().selectedSpells[0] == caster->GetActorRuntimeData().selectedSpells[1]) {
+            //        *outbound = true;
+            //    }
+            //    else {
+            //        float dualcast = 0.0f;
+            //        RE::HandleEntryPoint(RE::PerkEntryPoint::kCanDualCastSpell, caster, &dualcast, "DCO", 3, {a_spell});
+            //        if (dualcast > 0.0f) {
+            //            //*outbound = true; 
+            //            bool* boolPtr = static_cast<bool*>(outbound);
+            //*boolPtr = true; 
+            //        }
+            //        else {
+            //if (a_AMC->state.get() == RE::MagicCaster::State::kUnk02) {
+            //    RE::ConsoleLog::GetSingleton()->Print("tested buffer");
+
+            //}
+            //else if (a_AMC->state.get() == RE::MagicCaster::State::kReady) {
+            //    RE::ConsoleLog::GetSingleton()->Print("testededed buffer");
+
+            //}
+            //else if (a_AMC->state.get() == RE::MagicCaster::State::kNone) {
+            //    RE::ConsoleLog::GetSingleton()->Print("butter buffer");
+
+            //}
+            //else if (a_AMC->state.get() == RE::MagicCaster::State::kUnk01) {
+            //    RE::ConsoleLog::GetSingleton()->Print("buttering buffer");
+            //    if (a_PC->AsActorValueOwner()->GetActorValue(RE::ActorValue::kDestruction) > 30.0f)
+            //    {
+            //        a_AMC->InterruptCast(true);
+            //        RE::ConsoleLog::GetSingleton()->Print("Spaghetti");
+            //        //33623, 34401
+
+            //    }
+
+            //}
+            //else if (a_AMC->state.get() == RE::MagicCaster::State::kCasting) {
+            //    RE::ConsoleLog::GetSingleton()->Print("cast");
+
+            //}
+            //else if (a_AMC->state.get() == RE::MagicCaster::State::kCharging) {
+            //    RE::ConsoleLog::GetSingleton()->Print("charge");
+
+            //}
+            //else if (a_AMC->state.get() == RE::MagicCaster::State::kUnk07) {
+            //    RE::ConsoleLog::GetSingleton()->Print("seven");
+
+            //}
+            //else if (a_AMC->state.get() == RE::MagicCaster::State::kUnk04) {
+            //    RE::ConsoleLog::GetSingleton()->Print("four");
+
+            //}
+            //else if (a_AMC->state.get() == RE::MagicCaster::State::kUnk09) {
+            //    RE::ConsoleLog::GetSingleton()->Print("nine");
+
+            //}
+            //else if (a_AMC->state.get() == RE::MagicCaster::State::kUnk08) {
+            //    RE::ConsoleLog::GetSingleton()->Print("eight");
+
+            //}
+            //RE::ConsoleLog::GetSingleton()->Print("test buffer");
+            func(a_AMC, spell, a_PC, a_arg4);
+        }
+        static inline REL::Relocation<decltype(thunk)> func;
+    };
 
 
     struct SpellCastingHook : Xbyak::CodeGenerator {
@@ -124,13 +198,56 @@ struct Hooks {
         static void Call(RE::ActorMagicCaster* a_AMC, RE::ButtonEvent* be) {
             INFO("message here");
             auto a = a_AMC->GetCasterAsActor();
-            a->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kPermanent, RE::ActorValue::kAlterationPowerModifier, 50.0f);
+            //a->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kPermanent, RE::ActorValue::kAlterationPowerModifier, 50.0f);
             RE::ConsoleLog::GetSingleton()->Print("test buffer");
             if (be->HeldDuration() < 1.0f) {
                 INFO("my name is: {}", "asrak");
+                //if (a_AMC->state.get() == RE::MagicCaster::State::kUnk02) {
+                //    RE::ConsoleLog::GetSingleton()->Print("tested buffer");
 
-                RE::ConsoleLog::GetSingleton()->Print("tested buffer");
+                //}
+                //else if (a_AMC->state.get() == RE::MagicCaster::State::kReady) {
+                //    RE::ConsoleLog::GetSingleton()->Print("testededed buffer");
 
+                //}
+                //else if (a_AMC->state.get() == RE::MagicCaster::State::kNone) {
+                //    RE::ConsoleLog::GetSingleton()->Print("butter buffer");
+
+                //}
+                //else if (a_AMC->state.get() == RE::MagicCaster::State::kUnk01) {
+                //    RE::ConsoleLog::GetSingleton()->Print("buttering buffer");
+                //    if (a->AsActorValueOwner()->GetActorValue(RE::ActorValue::kDestruction) > 30.0f) 
+                //    { a_AMC->InterruptCast(true); 
+                //    RE::ConsoleLog::GetSingleton()->Print("Spaghetti");
+                //    //33623, 34401
+                //    
+                //    }
+
+                //}
+                //else if (a_AMC->state.get() == RE::MagicCaster::State::kCasting) {
+                //    RE::ConsoleLog::GetSingleton()->Print("cast");
+
+                //}
+                //else if (a_AMC->state.get() == RE::MagicCaster::State::kCharging) {
+                //    RE::ConsoleLog::GetSingleton()->Print("charge");
+
+                //}
+                //else if (a_AMC->state.get() == RE::MagicCaster::State::kUnk07) {
+                //    RE::ConsoleLog::GetSingleton()->Print("seven");
+
+                //}
+                //else if (a_AMC->state.get() == RE::MagicCaster::State::kUnk04) {
+                //    RE::ConsoleLog::GetSingleton()->Print("four");
+
+                //}
+                //else if (a_AMC->state.get() == RE::MagicCaster::State::kUnk09) {
+                //    RE::ConsoleLog::GetSingleton()->Print("nine");
+
+                //}
+                //else if (a_AMC->state.get() == RE::MagicCaster::State::kUnk08) {
+                //    RE::ConsoleLog::GetSingleton()->Print("eight");
+
+                //}
             }
 
         }
@@ -157,14 +274,61 @@ struct Hooks {
         static void Call(RE::ActorMagicCaster* a_AMC, RE::ButtonEvent* be) {
             INFO("message here");
             auto a = a_AMC->GetCasterAsActor();
-            a->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kPermanent, RE::ActorValue::kAlterationPowerModifier, 66.6f);
-            RE::ConsoleLog::GetSingleton()->Print("test buffering");
-            if (be->HeldDuration() > 1.0f) {
-                INFO("my name is: {}", "asrak karsa");
+            //a->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kPermanent, RE::ActorValue::kAlterationPowerModifier, 66.6f);
+            //RE::ConsoleLog::GetSingleton()->Print("test buffering");
+            //if (be->HeldDuration() > 1.0f) {
+            //    INFO("my name is: {}", "asrak karsa");
 
-                RE::ConsoleLog::GetSingleton()->Print("tested buffer");
+            //    RE::ConsoleLog::GetSingleton()->Print("tested buffer");
 
-            }
+            //}
+            //if (a_AMC->state.get() == RE::MagicCaster::State::kUnk02) {
+            //    RE::ConsoleLog::GetSingleton()->Print("tested buffer");
+
+            //}
+            //else if (a_AMC->state.get() == RE::MagicCaster::State::kReady) {
+            //    RE::ConsoleLog::GetSingleton()->Print("testededed buffer");
+
+            //}
+            //else if (a_AMC->state.get() == RE::MagicCaster::State::kNone) {
+            //    RE::ConsoleLog::GetSingleton()->Print("butter buffer");
+
+            //}
+            //else if (a_AMC->state.get() == RE::MagicCaster::State::kUnk01) {
+            //    RE::ConsoleLog::GetSingleton()->Print("buttering buffer");
+            //    if (a->AsActorValueOwner()->GetActorValue(RE::ActorValue::kDestruction) > 30.0f)
+            //    {
+            //        a_AMC->InterruptCast(true);
+            //        RE::ConsoleLog::GetSingleton()->Print("Spaghetti");
+            //        //33623, 34401
+
+            //    }
+
+            //}
+            //else if (a_AMC->state.get() == RE::MagicCaster::State::kCasting) {
+            //    RE::ConsoleLog::GetSingleton()->Print("cast");
+
+            //}
+            //else if (a_AMC->state.get() == RE::MagicCaster::State::kCharging) {
+            //    RE::ConsoleLog::GetSingleton()->Print("charge");
+
+            //}
+            //else if (a_AMC->state.get() == RE::MagicCaster::State::kUnk07) {
+            //    RE::ConsoleLog::GetSingleton()->Print("seven");
+
+            //}
+            //else if (a_AMC->state.get() == RE::MagicCaster::State::kUnk04) {
+            //    RE::ConsoleLog::GetSingleton()->Print("four");
+
+            //}
+            //else if (a_AMC->state.get() == RE::MagicCaster::State::kUnk09) {
+            //    RE::ConsoleLog::GetSingleton()->Print("nine");
+
+            //}
+            //else if (a_AMC->state.get() == RE::MagicCaster::State::kUnk08) {
+            //    RE::ConsoleLog::GetSingleton()->Print("eight");
+
+            //}
             CastSpellImpl(a_AMC);
 
         }
@@ -183,6 +347,23 @@ struct Hooks {
                     a_AMC->StartCastImpl();
                 }
             }
+        }
+        static inline REL::Relocation<decltype(thunk)> func;
+    };
+
+    struct SecondInterruptHook {
+        static void thunk(RE::ActorMagicCaster* a_AMC) {
+            auto a = a_AMC->GetCasterAsActor();
+            auto source = a_AMC->GetCastingSource();
+
+
+            RE::ConsoleLog::GetSingleton()->Print("FinishCasting!");
+            func(a_AMC);
+            //if (a_AMC->currentSpell->GetCastingType() != RE::MagicSystem::CastingType::kConcentration) {
+            //    if (a->AsActorValueOwner()->GetActorValue(RE::ActorValue::kAlterationPowerModifier) > 30.0f) {
+            //        a_AMC->StartCastImpl();
+            //    }
+            //}
         }
         static inline REL::Relocation<decltype(thunk)> func;
     };
@@ -254,6 +435,11 @@ struct Hooks {
         REL::Relocation<std::uintptr_t> functionce{RELOCATION_ID(33672, 34452), REL::Relocate(0x377, 0x354)};
         stl::write_thunk_call<FindTargetsHook>(functionce.address());
 
+        REL::Relocation<std::uintptr_t> SecondInterruptHookFunction{RELOCATION_ID(41362, 42436), REL::Relocate(0x182, 0x182)};
+        stl::write_thunk_call<SecondInterruptHook>(SecondInterruptHookFunction.address());
+
+        //REL::Relocation<std::uintptr_t> functionInitiate{RELOCATION_ID(41338, 42417), REL::Relocate(0xA8, 0xA8)};
+        //stl::write_thunk_call<InitiateSpellHook>(functionInitiate.address());
 
 	}
 };

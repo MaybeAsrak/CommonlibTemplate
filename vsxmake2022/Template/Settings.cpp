@@ -10,7 +10,7 @@ void Settings::Load()
 		//const auto settings = toml::parse(TOML_PATH);
 		const auto settings = toml::parse(TOML_PATH);
 
-		ToggleHotkey1 = toml::find<int>(settings, "ToggleHotkey1");
+		auto ToggleHotkey1 = toml::find<int>(settings, "ToggleHotkey1");
 
 
 

@@ -55,6 +55,7 @@ namespace Events
 				default:
 					break;
 				}
+				
 
 				if (key == hotKey && !button->IsRepeating()) {
 					if (settings->GetToggle()) {
