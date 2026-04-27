@@ -296,13 +296,15 @@ struct Hooks {
             //}
             //else if (a_AMC->state.get() == RE::MagicCaster::State::kUnk01) {
             //    RE::ConsoleLog::GetSingleton()->Print("buttering buffer");
-            //    if (a->AsActorValueOwner()->GetActorValue(RE::ActorValue::kDestruction) > 30.0f)
-            //    {
+                if (a->AsActorValueOwner()->GetActorValue(RE::ActorValue::kDestruction) > 30.0f)
+                {
+                      a_AMC->StartCastImpl();
+                      a->AsActorValueOwner()->SetActorValue(RE::ActorValue::kDestruction)
             //        a_AMC->InterruptCast(true);
             //        RE::ConsoleLog::GetSingleton()->Print("Spaghetti");
             //        //33623, 34401
 
-            //    }
+                }
 
             //}
             //else if (a_AMC->state.get() == RE::MagicCaster::State::kCasting) {
